@@ -11,6 +11,7 @@ $(document).ready(function() {
         console.log(response);
         showQuestion(response);
         showAnswers(response);
+        nextQuestion(response); //siguiente pregunta
         
     })
     .fail(function(error) {
@@ -26,13 +27,12 @@ $(document).ready(function() {
             $(".pregunta p").hide();
             $(".pregunta p:first").show();
             //console.log(preguntas)
-
         })
         
         
     }
-    let correct_answer=0;
-    let counter = 0;
+    let correctAnswer=0;
+    let wrongAnswer=0;
     function showAnswers(data){
         $.each(data.results,function(index,respuestita) {
             var respuestaCorrecta = respuestita.correct_answer;
@@ -51,28 +51,35 @@ $(document).ready(function() {
             "<li class='boton' type='submit'>"+ shuffle(respuestas[3]) + "</li>").appendTo("#alternativas");
            
             //se muestras las primeras 4 respuestas de la pregunta:
-            
+            //console.log(respuestas)
             var largoRespuestas =$("#alternativas .alternatives").length;
             for(i=largoRespuestas ; i <=10 ; i++){
                 $("#alternativas .alternatives").hide();
                 $("#alternativas .alternatives:nth-child(1)").show(); //muestra la primera lista.
             }
             
-            
-            
-            //funcion alternativa
-            $(" .boton").one('click',function() { //se comprueba que la opcion clickeada es correcta
-                if($(".boton")===respuestaCorrecta){
-                    console.log("correcto!");
-                }
-            });
-
-            
-           
-            
-            console.log(respuestas)
-            
         })
+
+
+    }
+   
+    //funcion siguente pregunta y alternativa:
+    function nextQuestion(data){
+        $(".boton").one('click',function() { //se comprueba que la opcion clickeada es correcta solo una vez
+                
+            if($("this").text() == data.results.correct_answer ){
+                console.log("correcto!");
+                //$("this").css({'background-color':'green'})
+                //correctAnswer++
+                //
+            }
+            if($('this').text() ==! data.results.correct_answer){
+                console.log("wrong")
+                //$("this").css({'background-color':'red'})
+                $("#next").html('repetir test?')
+                //wrongAnswer++
+            }
+        });
     }
 
     //funcion para desordenar array con las respuestas
