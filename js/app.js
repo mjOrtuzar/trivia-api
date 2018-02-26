@@ -31,6 +31,8 @@ $(document).ready(function() {
         
         
     }
+    let correct_answer=0;
+    let counter = 0;
     function showAnswers(data){
         $.each(data.results,function(index,respuestita) {
             var respuestaCorrecta = respuestita.correct_answer;
@@ -43,23 +45,29 @@ $(document).ready(function() {
             shuffle(respuestas);
             
             //se añaden las alternativas al html:
-            var list = $("<ul class = alternatives>").html("<li class='boton'> " + shuffle(respuestas[0])+ "</li>" +
-            "<li class='boton'>"+ shuffle(respuestas[1]) + "</li>" +
-            "<li class='boton'>"+ shuffle(respuestas[2])+ "</li>" +
-            "<li class='boton'>"+ shuffle(respuestas[3]) + "</li>");
+            $("<ul class = alternatives>").html("<li class='boton' type='submit'> " + shuffle(respuestas[0])+ "</li>" +
+            "<li class='boton' type='submit'>"+ shuffle(respuestas[1]) + "</li>" +
+            "<li class='boton' type='submit'>"+ shuffle(respuestas[2])+ "</li>" +
+            "<li class='boton' type='submit'>"+ shuffle(respuestas[3]) + "</li>").appendTo("#alternativas");
            
-            //se muestras las primeras 4 respuestas:
-
+            //se muestras las primeras 4 respuestas de la pregunta:
+            
             var largoRespuestas =$("#alternativas .alternatives").length;
-            $("#alternativas .alternatives").hide();
-            $("#alternativas .alternatives:nth-child(1)").show();
+            for(i=largoRespuestas ; i <=10 ; i++){
+                $("#alternativas .alternatives").hide();
+                $("#alternativas .alternatives:nth-child(1)").show(); //muestra la primera lista.
+            }
             
             
             
-            //funcion alternativas
-            //$("ul .boton").click(comprobar);
+            //funcion alternativa
+            $(" .boton").one('click',function() { //se comprueba que la opcion clickeada es correcta
+                if($(".boton")===respuestaCorrecta){
+                    console.log("correcto!");
+                }
+            });
 
-            list.appendTo("#alternativas");
+            
            
             
             console.log(respuestas)
@@ -88,6 +96,7 @@ $(document).ready(function() {
         select(array);
       }
 
+    
     
     
     
